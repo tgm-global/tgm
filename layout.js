@@ -61,9 +61,25 @@
     document.head.appendChild(s);
   }
 
+  // Add sticky style for header and footer on mobile and desktop
+  var stickyStyle = document.createElement('style');
+  stickyStyle.textContent = \`
+    .site-header {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000 !important;
+    }
+    .site-footer {
+      position: sticky !important;
+      bottom: 0 !important;
+      z-index: 1000 !important;
+    }
+  \`;
+  document.head.appendChild(stickyStyle);
+
   /* ---------- Header ---------- */
   var phoneHref = CONFIG.phoneTel ? 'tel:+' + CONFIG.phoneTel.replace(/\D/g, '') : '#';
-  var phone = '<a class="phone" href="' + phoneHref + '" aria-label="Call us at ' + esc(CONFIG.phoneDisplay) + '"><small>Call us</small><strong>' + esc(CONFIG.phoneDisplay) + '</strong></a>';
+  var phone = '<a class="phone" href="' + phoneHref + '" aria-label="Call us at ' + esc(CONFIG.phoneDisplay) + '"><strong>Call Now ' + esc(CONFIG.phoneDisplay) + '</strong></a>';
 
   var header = document.createElement('header');
   header.className = 'site-header';
@@ -74,113 +90,5 @@
         CONFIG.nav.map(function (n) { return '<a href="' + esc(n[1]) + '"' + (n[1] === active ? ' aria-current="page"' : '') + '>' + esc(n[0]) + '</a>'; }).join('') +
       '</nav>' +
       phone +
-      '<button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">&#9776;</button>' +
-    '</div>';
-
-  /* ---------- Breadcrumbs ---------- */
-  var crumbs = [['Home', 'index.html']].concat(P.crumbs || []);
-  var crumbNav = document.createElement('nav');
-  crumbNav.className = 'crumbs';
-  crumbNav.setAttribute('aria-label', 'Breadcrumb');
-  crumbNav.innerHTML = '<div class="wrap"><ol>' + crumbs.map(function (c, i) {
-    var last = i === crumbs.length - 1;
-    return '<li>' + (last || !c[1] ? '<span aria-current="page">' + esc(c[0]) + '</span>' : '<a href="' + esc(c[1]) + '">' + esc(c[0]) + '</a>') + '</li>';
-  }).join('') + '</ol></div>';
-  ld({
-    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-    itemListElement: crumbs.map(function (c, i) {
-      var o = { '@type': 'ListItem', position: i + 1, name: c[0] };
-      if (c[1] && i !== crumbs.length - 1) o.item = absUrl(c[1]);
-      return o;
-    })
-  });
-  if (file === 'index.html') {
-    ld({
-      '@context': 'https://schema.org', '@type': 'Organization', name: CONFIG.brand, url: CONFIG.domain + '/',
-      sameAs: CONFIG.social.map(function (s) { return s[1]; })
-    });
-  }
-
-  /* ---------- Footer + cookie banner ---------- */
-  var footer = document.createElement('footer');
-  footer.className = 'site-footer';
-  var footLinks = [['Blog', 'blog.html'], ['FAQ', 'faq.html']].concat(CONFIG.legalLinks);
-  footer.innerHTML =
-    '<div class="wrap fbar">' +
-      '<div class="fmain">' +
-        '<ul class="flinks">' + footLinks.map(function (n) { return '<li>' + link(n) + '</li>'; }).join('') + '<li><a href="#" id="cookieSettings">Cookie settings</a></li></ul>' +
-        '<p class="fnote">&copy; ' + new Date().getFullYear() + ' ' + esc(CONFIG.brand) + '. ' + esc(CONFIG.footerText) + ' We are not an airline.</p>' +
-      '</div>' +
-      '<div class="social" aria-label="Social media">' +
-        CONFIG.social.map(function (s) { return '<a href="' + esc(s[1]) + '" target="_blank" rel="noopener noreferrer me" aria-label="' + esc(s[0]) + '">' + esc(s[2]) + '</a>'; }).join('') +
-      '</div>' +
-      phone +
-    '</div>' +
-    '<div class="cookie" id="cookieBanner" role="dialog" aria-label="Cookie consent" hidden>' +
-      '<p>We use essential cookies to make this site work. With your permission we may also use optional cookies to improve the site. Read our <a href="cookie-policy.html">Cookie Policy</a>.</p>' +
-      '<div class="acts"><button type="button" id="cookieReject">Essential only</button><button type="button" class="yes" id="cookieAccept">Accept all</button></div>' +
-    '</div>';
-
-  document.body.insertBefore(header, document.body.firstChild);
-  document.body.insertBefore(crumbNav, header.nextSibling);
-  document.body.appendChild(footer);
-
-  /* ---------- Common sections: deals, internal links, FAQ ---------- */
-  var skip = P.skip || [];
-  var h = '';
-  if (skip.indexOf('deals') < 0 && BF.DEALS) {
-    h += '<section class="sec" id="deals"><h2>Deals and popular routes</h2><p class="lead">Pick a route and send a quick request. We will come back with current fares. <a href="flights-deals.html">See all deals</a></p><div class="cards">' +
-      BF.DEALS.map(function (d) {
-        return '<a class="card-link" href="' + esc(BF.qurl(d[0], d[1])) + '"><span class="tag">Deal</span><b>' + esc(BF.city(d[0])) + ' &rarr; ' + esc(BF.city(d[1])) + '</b><span>Ask for today\'s best available fares</span><em>Request fares &rarr;</em></a>';
-      }).join('') + '</div></section>';
-  }
-  if (skip.indexOf('links') < 0 && BF.EXPLORE) {
-    h += '<section class="sec" id="explore"><h2>Explore more</h2><p class="lead">More ways to plan your trip.</p><div class="cards">' +
-      BF.EXPLORE.filter(function (e) { return e[1] !== file; }).map(function (e) {
-        return '<a class="card-link" href="' + esc(e[1]) + '"><b>' + esc(e[0]) + '</b><span>' + esc(e[2]) + '</span><em>Open &rarr;</em></a>';
-      }).join('') + '</div></section>';
-  }
-  var faqs = [];
-  if (skip.indexOf('faq') < 0) {
-    faqs = P.faqs || BF.FAQ_DEFAULT || [];
-    if (faqs.length) {
-      h += '<section class="sec faq" id="faq"><h2>Frequently asked questions</h2><p class="lead">Quick answers. <a href="faq.html">View all FAQs</a></p>' +
-        faqs.map(function (f) { return '<details><summary>' + esc(f[0]) + '</summary><p>' + esc(f[1]) + '</p></details>'; }).join('') + '</section>';
-      ld({
-        '@context': 'https://schema.org', '@type': 'FAQPage',
-        mainEntity: faqs.map(function (f) { return { '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } }; })
-      });
-    }
-  }
-  if (h) {
-    var common = document.createElement('div');
-    common.className = 'wrap common';
-    common.innerHTML = h;
-    document.body.insertBefore(common, footer);
-  }
-
-  /* ---------- Behaviour ---------- */
-  function measure() {
-    var r = document.documentElement.style;
-    r.setProperty('--hh', header.offsetHeight + 'px');
-    r.setProperty('--fh', footer.offsetHeight + 'px');
-  }
-  measure();
-  window.addEventListener('resize', measure);
-  if (window.ResizeObserver) { var ro = new ResizeObserver(measure); ro.observe(header); ro.observe(footer); }
-
-  var toggle = header.querySelector('.menu-toggle'), nav = header.querySelector('.site-nav');
-  toggle.addEventListener('click', function () {
-    var open = nav.classList.toggle('active');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-  });
-
-  var KEY = 'bf_cookie_consent', banner = document.getElementById('cookieBanner');
-  function getC() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
-  function setC(v) { try { localStorage.setItem(KEY, v); } catch (e) {} banner.hidden = true; }
-  if (!getC()) banner.hidden = false;
-  document.getElementById('cookieAccept').onclick = function () { setC('all'); };
-  document.getElementById('cookieReject').onclick = function () { setC('essential'); };
-  document.getElementById('cookieSettings').onclick = function (e) { e.preventDefault(); banner.hidden = false; };
-})();
+      '<button class="menu-toggle" type
+       
