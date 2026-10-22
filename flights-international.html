@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>International Flights: Top Destinations from the USA | bookflights.online</title>
+<meta name="description" content="Explore international flight destinations from the USA including London, Paris, Tokyo, Dubai and Delhi. Send a request to get fare options.">
+<link rel="canonical" href="https://bookflights.online/flights-international.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script>window.PAGE = {
+  nav: 'flights.html',
+  crumbs: [['Flights', 'flights.html'], ['International destinations']],
+  faqs: [
+    ['Do I need a passport?', 'For international travel you normally need a valid passport. Entry rules, visas and passport validity requirements depend on your destination and nationality, so check them before you book.'],
+    ['Can I book a one-way international flight?', 'Yes, you can request one way or round trip. Some countries may ask for proof of onward travel.'],
+    ['Are taxes and fees included?', 'Taxes, fees and fare rules are shown to you before you pay.']
+  ]
+};</script>
+<script src="layout.js" defer></script>
+</head>
+<body>
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow">Flights</p>
+    <h1>International flight destinations</h1>
+    <p class="sub">From European capitals to Asian cities and nearby beaches. Pick a destination to start your request from New York, then tell us your dates.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="sec" style="margin-top:40px">
+    <h2>Popular international destinations</h2>
+    <p class="lead">Departing from another US city? Mention it in your request and our team will help.</p>
+    <div class="cards" id="dest"></div>
+  </section>
+
+  <section class="sec">
+    <div class="prose">
+      <h2>Before you fly abroad</h2>
+      <ul>
+        <li><b>Check entry rules.</b> Passport validity, visas and health requirements vary by country and can change.</li>
+        <li><b>Name must match.</b> Your ticket name must match your passport.</li>
+        <li><b>Plan connections.</b> Long-haul trips often involve a connection. Allow extra time if you change airports or terminals.</li>
+        <li><b>Review baggage.</b> International fares can have different baggage rules from domestic ones.</li>
+      </ul>
+      <p>For trips within the US, see our <a href="flights-domestic.html">domestic destinations</a>, or read our <a href="blog.html">travel blog</a> for checklists.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var el = document.getElementById('dest'), BF = window.BF;
+  el.innerHTML = BF.INTERNATIONAL.map(function (d) {
+    return '<a class="card-link" href="' + BF.esc(BF.qurl('New York, NY', d[0])) + '"><b>' + BF.esc(BF.city(d[0])) + '</b><span>' + BF.esc(d[1]) + '</span><em>Request fares from New York &rarr;</em></a>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

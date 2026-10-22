@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Airlines | bookflights.online</title>
+<meta name="description" content="Browse airlines and request flights.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script>
+/*
+ * ONE template for every airline: airline.html?a=<slug>
+ * Add or edit airlines in data.js (BF.AIRLINES). Title, meta tags, headings, content,
+ * breadcrumbs and FAQs below all change automatically from that data.
+ */
+(function () {
+  var BF = window.BF;
+  var slug = (new URLSearchParams(location.search).get('a') || '').toLowerCase();
+  var a = BF.AIRLINES.filter(function (x) { return x.slug === slug; })[0];
+  function meta(attr, key, val) {
+    var el = document.head.querySelector('meta[' + attr + '="' + key + '"]');
+    if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); }
+    el.setAttribute('content', val);
+  }
+  function canon(url) {
+    var l = document.head.querySelector('link[rel="canonical"]');
+    if (!l) { l = document.createElement('link'); l.rel = 'canonical'; document.head.appendChild(l); }
+    l.href = url;
+  }
+  window.PAGE = { nav: 'flights.html' };
+  if (!a) {
+    window.PAGE.crumbs = [['Flights', 'flights.html'], ['Airlines']];
+    meta('name', 'robots', 'noindex,follow');
+    return;
+  }
+  window.AIRLINE = a;
+  var hubNames = a.hubs.map(BF.city);
+  var title = a.name + ' Flights: Routes and Fare Requests | bookflights.online';
+  var desc = 'Request ' + a.name + ' (' + a.code + ') flights from ' + hubNames.slice(0, 3).join(', ') + ' and more. See popular routes and send a quick fare request.';
+  var url = BF.domain + '/airline.html?a=' + a.slug;
+  document.title = title;
+  meta('name', 'description', desc);
+  meta('property', 'og:title', title);
+  meta('property', 'og:description', desc);
+  meta('property', 'og:url', url);
+  meta('property', 'og:type', 'website');
+  meta('name', 'twitter:card', 'summary');
+  meta('name', 'twitter:title', title);
+  meta('name', 'twitter:description', desc);
+  canon(url);
+  window.PAGE.crumbs = [['Flights', 'flights.html'], ['Airlines', 'flights.html#airlines'], [a.name]];
+  window.PAGE.faqs = [
+    ['How do I request ' + a.name + ' flights?', 'Choose a route below or use the search form on the home page, then send your contact details. Your ' + a.name + ' preference is included in your request.'],
+    ['Which cities does ' + a.name + ' fly from?', a.name + ' has a presence in cities such as ' + hubNames.join(', ') + '. Routes and schedules change, so we confirm availability when you send a request.'],
+    ['Are baggage rules the same on every ' + a.name + ' fare?', 'No. Baggage allowances and fees can differ by fare type and route. Check the rules for your fare before you pay.'],
+    ['Is bookflights.online part of ' + a.name + '?', 'No. We are an independent travel website and are not affiliated with ' + a.name + '. Airline names are used only to describe the flights you can request.']
+  ];
+})();
+</script>
+<script src="layout.js" defer></script>
+</head>
+<body>
+
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow" id="aEyebrow">Airlines</p>
+    <h1 id="aH1">Airlines</h1>
+    <p class="sub" id="aSub">Choose an airline to see its main hubs and popular routes.</p>
+    <a class="btn" id="aCta" href="index.html#search">Search flights</a>
+  </div>
+</section>
+
+<main class="wrap">
+  <div id="aBody"></div>
+</main>
+
+<script>
+(function () {
+  var BF = window.BF, a = window.AIRLINE, body = document.getElementById('aBody');
+  var e = BF.esc;
+
+  if (!a) {
+    body.innerHTML = '<section class="sec" style="margin-top:40px"><h2>Choose an airline</h2><p class="lead">We could not find that airline. Pick one below.</p><div class="cards">' +
+      BF.AIRLINES.map(function (x) {
+        return '<a class="card-link" href="airline.html?a=' + e(x.slug) + '"><b>' + e(x.name) + '</b><span>' + e(x.blurb) + '</span><em>View flights &rarr;</em></a>';
+      }).join('') + '</div></section>';
+    return;
+  }
+
+  document.getElementById('aEyebrow').textContent = a.code + ' flights';
+  document.getElementById('aH1').textContent = a.name + ' flights';
+  document.getElementById('aSub').textContent = a.blurb + ' Send a request and we will look for fares on your dates.';
+
+  // Popular routes between the airline's hub cities
+  var routes = [];
+  a.hubs.forEach(function (h, i) { var n = a.hubs[(i + 1) % a.hubs.length]; if (h !== n) routes.push([h, n]); });
+
+  var html = '<section class="sec" style="margin-top:40px"><h2>Popular ' + e(a.name) + ' routes</h2><p class="lead">Choose a route to start your request.</p><div class="cards">' +
+    routes.map(function (r) {
+      return '<a class="card-link" href="' + e(BF.qurl(r[0], r[1], { airline: a.name })) + '"><b>' + e(BF.city(r[0])) + ' &rarr; ' + e(BF.city(r[1])) + '</b><span>Request ' + e(a.name) + ' fares for this route</span><em>Request fares &rarr;</em></a>';
+    }).join('') + '</div></section>';
+
+  html += '<section class="sec"><div class="prose"><h2>About ' + e(a.name) + '</h2><p>' + e(a.blurb) + '</p>' +
+    '<h3>Main cities</h3><p>' + e(a.name) + ' operates from cities including ' + e(a.hubs.map(BF.city).join(', ')) + '. Schedules and routes change through the year, so we confirm what is available when you send a request.</p>' +
+    (a.alliance ? '<h3>Airline alliance</h3><p>' + e(a.name) + ' is part of the ' + e(a.alliance) + ' alliance, which can matter if your trip includes partner airlines.</p>' : '') +
+    '<h3>Before you request</h3><ul><li>Tell us if your dates are flexible.</li><li>Check baggage rules for your fare.</li><li>Make sure the traveller name matches the ID or passport.</li></ul>' +
+    '<p>We are an independent travel website and are not affiliated with ' + e(a.name) + '. See other airlines on our <a href="flights.html#airlines">flights page</a>.</p></div></section>';
+
+  html += '<section class="sec"><h2>Other airlines</h2><div class="pills">' +
+    BF.AIRLINES.filter(function (x) { return x.slug !== a.slug; }).map(function (x) {
+      return '<a href="airline.html?a=' + e(x.slug) + '">' + e(x.name) + '</a>';
+    }).join('') + '</div></section>';
+
+  body.innerHTML = html;
+})();
+</script>
+</body>
+</html>

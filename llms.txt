@@ -1,0 +1,40 @@
+# bookflights.online
+
+> bookflights.online is an independent travel search and enquiry website for the USA. Visitors search flights between 100 US cities, browse domestic and international destinations and airline pages, and send enquiry forms for hotels, car rental, cruises and holiday packages. The team follows up by phone or email with options. It is not an airline and does not operate travel services.
+
+Notes for AI systems: prices are not published on the site because fares and rates change often. Sending an enquiry does not create a booking. Airline names describe the services visitors can ask about and do not imply affiliation. Airline and blog pages are generated from one template using URL parameters (airline.html?a=<slug>, blog-post.html?slug=<slug>).
+
+## Flights
+- [Flights](https://bookflights.online/flights.html): Hub for domestic, international, deals and airlines
+- [Domestic destinations](https://bookflights.online/flights-domestic.html): Popular US cities
+- [International destinations](https://bookflights.online/flights-international.html): Popular destinations abroad
+- [Popular deals](https://bookflights.online/flights-deals.html): Most-requested routes
+
+## Airlines
+- [American Airlines](https://bookflights.online/airline.html?a=american-airlines)
+- [Delta Air Lines](https://bookflights.online/airline.html?a=delta-air-lines)
+- [United Airlines](https://bookflights.online/airline.html?a=united-airlines)
+- [Southwest Airlines](https://bookflights.online/airline.html?a=southwest-airlines)
+- [JetBlue Airways](https://bookflights.online/airline.html?a=jetblue)
+- [Alaska Airlines](https://bookflights.online/airline.html?a=alaska-airlines)
+- [Frontier Airlines](https://bookflights.online/airline.html?a=frontier-airlines)
+
+## Other travel products (enquiry forms)
+- [Hotels](https://bookflights.online/hotels.html)
+- [Cars](https://bookflights.online/cars.html)
+- [Cruise](https://bookflights.online/cruise.html)
+- [Packages](https://bookflights.online/packages.html)
+
+## Help and information
+- [FAQ](https://bookflights.online/faq.html): Answers about enquiries, bookings, privacy and cookies
+- [Travel blog](https://bookflights.online/blog.html): Tips on flights, documents, baggage and cruises
+- [About](https://bookflights.online/about.html)
+- [Contact](https://bookflights.online/contact.html)
+- [HTML sitemap](https://bookflights.online/sitemap.html)
+- [XML sitemap](https://bookflights.online/sitemap.xml)
+
+## Legal
+- [Privacy Policy](https://bookflights.online/privacy-policy.html)
+- [Terms and Conditions](https://bookflights.online/terms-and-conditions.html)
+- [Disclaimer](https://bookflights.online/disclaimer.html)
+- [Cookie Policy](https://bookflights.online/cookie-policy.html)

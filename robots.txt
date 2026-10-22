@@ -1,0 +1,9 @@
+# robots.txt for https://bookflights.online
+User-agent: *
+Allow: /
+# Form result and enquiry pages (query strings are unique per visitor)
+Disallow: /thankyou.html
+Disallow: /query.html
+Disallow: /page-template.html
+
+Sitemap: https://bookflights.online/sitemap.xml

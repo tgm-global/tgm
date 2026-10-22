@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ: Flights, Hotels, Cars, Cruises and Packages | bookflights.online</title>
+<meta name="description" content="Answers to common questions about flight enquiries, hotels, car rental, cruises, packages, privacy and cookies.">
+<link rel="canonical" href="https://bookflights.online/faq.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script>
+window.PAGE = { crumbs: [['FAQ']], skip: ['faq'] };
+// FAQ structured data for every question on this page
+(function () {
+  var all = [];
+  window.BF.FAQ_GROUPS.forEach(function (g) { g.items.forEach(function (i) { all.push(i); }); });
+  var s = document.createElement('script'); s.type = 'application/ld+json';
+  s.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: all.map(function (f) { return { '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } }; }) });
+  document.head.appendChild(s);
+})();
+</script>
+<script src="layout.js" defer></script>
+</head>
+<body>
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow">Help</p>
+    <h1>Frequently asked questions</h1>
+    <p class="sub">Quick answers about enquiries, bookings, privacy and cookies. Cannot find what you need? <a href="contact.html" style="color:#FFB020">Contact us</a>.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <div id="faqGroups"></div>
+</main>
+
+<script>
+(function () {
+  var BF = window.BF;
+  document.getElementById('faqGroups').innerHTML = BF.FAQ_GROUPS.map(function (g) {
+    return '<section class="sec faq" id="faq-' + g.title.toLowerCase().replace(/[^a-z]+/g, '-') + '"><h2>' + BF.esc(g.title) + '</h2>' +
+      g.items.map(function (f) { return '<details><summary>' + BF.esc(f[0]) + '</summary><p>' + BF.esc(f[1]) + '</p></details>'; }).join('') + '</section>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

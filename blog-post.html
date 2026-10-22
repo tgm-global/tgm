@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Travel Blog | bookflights.online</title>
+<meta name="description" content="Travel tips and guides from bookflights.online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script src="posts.js"></script>
+<script>
+/* ONE template for every article: blog-post.html?slug=<slug>. Posts live in posts.js. */
+(function () {
+  var BF = window.BF;
+  var slug = new URLSearchParams(location.search).get('slug') || '';
+  var p = BF.POSTS.filter(function (x) { return x.slug === slug; })[0];
+  function meta(attr, key, val) {
+    var el = document.head.querySelector('meta[' + attr + '="' + key + '"]');
+    if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); }
+    el.setAttribute('content', val);
+  }
+  window.PAGE = { crumbs: [['Blog', 'blog.html'], [p ? p.title : 'Article']] };
+  if (!p) { meta('name', 'robots', 'noindex,follow'); return; }
+  window.POST = p;
+  var title = p.title + ' | bookflights.online';
+  var url = BF.domain + '/blog-post.html?slug=' + p.slug;
+  document.title = title;
+  meta('name', 'description', p.excerpt);
+  meta('property', 'og:title', title);
+  meta('property', 'og:description', p.excerpt);
+  meta('property', 'og:type', 'article');
+  meta('property', 'og:url', url);
+  var l = document.createElement('link'); l.rel = 'canonical'; l.href = url; document.head.appendChild(l);
+  var s = document.createElement('script'); s.type = 'application/ld+json';
+  s.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, description: p.excerpt, datePublished: p.date, mainEntityOfPage: url, publisher: { '@type': 'Organization', name: 'bookflights.online' } });
+  document.head.appendChild(s);
+})();
+</script>
+<script src="layout.js" defer></script>
+</head>
+<body>
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow">Travel blog</p>
+    <h1 id="pTitle">Article</h1>
+    <p class="sub" id="pMeta"></p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="sec" style="margin-top:40px"><article class="prose" id="pBody"></article></section>
+</main>
+
+<script>
+(function () {
+  var BF = window.BF, p = window.POST;
+  if (!p) {
+    document.getElementById('pTitle').textContent = 'Article not found';
+    document.getElementById('pBody').innerHTML = '<p>We could not find that article. See all articles on the <a href="blog.html">blog</a>.</p>';
+    return;
+  }
+  document.getElementById('pTitle').textContent = p.title;
+  document.getElementById('pMeta').textContent = 'Published ' + p.date;
+  document.getElementById('pBody').innerHTML = p.body +
+    '<h2>More articles</h2><ul>' + BF.POSTS.filter(function (x) { return x.slug !== p.slug; }).map(function (x) {
+      return '<li><a href="blog-post.html?slug=' + BF.esc(x.slug) + '">' + BF.esc(x.title) + '</a></li>';
+    }).join('') + '</ul>';
+})();
+</script>
+</body>
+</html>

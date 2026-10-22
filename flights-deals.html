@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Popular Flight Deals and Routes | bookflights.online</title>
+<meta name="description" content="Most-requested flight routes in the USA and abroad. Choose a route and send a request to get the best available fares.">
+<link rel="canonical" href="https://bookflights.online/flights-deals.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script>window.PAGE = {
+  nav: 'flights.html',
+  crumbs: [['Flights', 'flights.html'], ['Popular deals']],
+  skip: ['deals'],
+  faqs: [
+    ['Are these fixed prices?', 'No. Fares change often, so we do not show fixed prices. Send a request and our team will share the current options.'],
+    ['How do I get the best fare?', 'Be flexible with dates and nearby airports, and send your request early.'],
+    ['Does a request cost anything?', 'No. Sending a request does not commit you to buy.']
+  ]
+};</script>
+<script src="layout.js" defer></script>
+</head>
+<body>
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow">Flights</p>
+    <h1>Popular flight deals</h1>
+    <p class="sub">The routes travellers ask about most. Choose one and we will come back with the best available fares for your dates.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="sec" style="margin-top:40px" id="deals">
+    <h2>Most-requested routes</h2>
+    <p class="lead">Fares change daily, so we share live options after you send a request.</p>
+    <div class="cards" id="dealGrid"></div>
+  </section>
+
+  <section class="sec">
+    <div class="prose">
+      <h2>How to find a better fare</h2>
+      <ul>
+        <li><b>Be flexible.</b> Shifting your trip by a day or two can reduce the price.</li>
+        <li><b>Try nearby airports.</b> A different airport in the same region may have better fares.</li>
+        <li><b>Book early for busy periods.</b> Holidays and school breaks fill up fast.</li>
+        <li><b>Compare total cost.</b> Include baggage and seat fees, not only the base fare.</li>
+      </ul>
+      <p>Browse <a href="flights-domestic.html">domestic</a> and <a href="flights-international.html">international</a> destinations, or start from an <a href="flights.html#airlines">airline page</a>.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var BF = window.BF;
+  var routes = BF.DEALS.concat([
+    ['Los Angeles, CA', 'Las Vegas, NV'], ['Denver, CO', 'Phoenix, AZ'], ['Houston, TX', 'Chicago, IL'],
+    ['Atlanta, GA', 'Dallas, TX'], ['Washington, DC', 'Boston, MA'], ['San Francisco, CA', 'Honolulu, HI']
+  ]);
+  document.getElementById('dealGrid').innerHTML = routes.map(function (d) {
+    return '<a class="card-link" href="' + BF.esc(BF.qurl(d[0], d[1])) + '"><span class="tag">Popular</span><b>' + BF.esc(BF.city(d[0])) + ' &rarr; ' + BF.esc(BF.city(d[1])) + '</b><span>Ask for current fares on this route</span><em>Request fares &rarr;</em></a>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

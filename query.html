@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flight Booking Inquiry | bookflights.online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<meta name="robots" content="noindex,follow">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script>window.PAGE = { nav: 'flights.html', crumbs: [['Flights', 'flights.html'], ['Flight request']], skip: ['deals', 'links', 'faq'] };</script>
+<script src="layout.js" defer></script>
+<style>
+button{font-family:inherit;cursor:pointer}
+.page-container{padding:40px 0 60px}
+.query-card{background:#fff;border-radius:20px;padding:32px;box-shadow:0 18px 50px rgba(11,27,51,.16);max-width:680px;margin:0 auto}
+.summary-banner{background:#E5EEFF;border-radius:14px;padding:20px;margin-bottom:28px;border:1.5px solid #C3CFE2}
+.summary-banner h3{margin:0 0 10px;color:#0B1B33;font-size:18px;font-weight:800}
+.summary-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;color:#51607A;font-size:15px;font-weight:600}
+.summary-details span{color:#0B1B33;font-weight:700}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.form-group label{font-size:13px;font-weight:700;color:#51607A;letter-spacing:.6px;text-transform:uppercase}
+.form-group input{padding:14px;border:1.5px solid #D5DDEA;border-radius:12px;font:600 16px 'Plus Jakarta Sans',system-ui,sans-serif;color:#0B1B33;outline:none}
+.form-group input:focus{border-color:#1458D6;box-shadow:0 0 0 3px rgba(20,88,214,.18)}
+.btn-submit{min-height:52px;width:100%;border-radius:14px;background:#FFB020;color:#0B1B33;font-weight:800;font-size:17px;border:none;cursor:pointer;margin-top:10px}
+.btn-submit:hover{background:#f0a318}
+</style>
+</head>
+<body>
+
+<main class="wrap page-container">
+  <div class="query-card">
+    <h1 style="margin:0 0 8px;font-size:32px;font-weight:800;letter-spacing:-1px;color:#0B1B33">Complete Flight Request</h1>
+    <p style="margin:0 0 24px;color:#51607A;font-size:16px">Enter your contact details to receive full itinerary options & best fares via Call/email.</p>
+
+    <!-- Search Summary -->
+    <div class="summary-banner">
+      <h3>Selected Trip Summary</h3>
+      <div class="summary-details">
+        <div>Route: <span id="sumRoute">Loading...</span></div>
+        <div>Trip Type: <span id="sumTrip">-</span></div>
+        <div>Departure: <span id="sumDepart">-</span></div>
+        <div>Return: <span id="sumReturn">N/A</span></div>
+        <div>Travellers: <span id="sumPax">-</span></div>
+        <div>Class: <span id="sumCabin">-</span></div>
+        <div>Airline: <span id="sumAirline">Any</span></div>
+      </div>
+    </div>
+
+    <!-- Web3Forms Integrated Form -->
+    <form action="https://api.web3forms.com/submit" method="POST">
+      <!-- Web3Forms Access Key (Replace YOUR_ACCESS_KEY_HERE with key from web3forms.com) -->
+      <input type="hidden" name="access_key" value="036dbdb1-0c9d-4296-a846-677c36667a17">
+      
+      <!-- Subject for your email -->
+      <input type="hidden" name="subject" value="New Flight Booking Inquiry - bookflights.online">
+      
+      <!-- Redirect to thankyou.html on successful submission -->
+      <input type="hidden" name="redirect" id="redirectUrl" value="">
+
+      <!-- Hidden search fields transferred from index.html -->
+      <input type="hidden" id="qFrom" name="Flight_From">
+      <input type="hidden" id="qTo" name="Flight_To">
+      <input type="hidden" id="qDepart" name="Departure_Date">
+      <input type="hidden" id="qReturn" name="Return_Date">
+      <input type="hidden" id="qPax" name="Passengers">
+      <input type="hidden" id="qCabin" name="Cabin_Class">
+      <input type="hidden" id="qTrip" name="Trip_Type">
+      <input type="hidden" id="qAirline" name="Airline_Preference">
+
+      <div class="form-group">
+        <label for="fullName">Full Name *</label>
+        <input type="text" id="fullName" name="Full_Name" placeholder="John Doe" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="Email_Address" placeholder="john@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="Phone_Number" placeholder="+1 (555) 000-0000" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Flight Inquiry</button>
+    </form>
+  </div>
+</main>
+
+<script>
+  var params = new URLSearchParams(window.location.search);
+  var from = params.get('from') || 'N/A';
+  var to = params.get('to') || 'N/A';
+  var depart = params.get('depart') || 'Flexible';
+  var ret = params.get('return') || 'Flexible';
+  var airline = params.get('airline') || 'Any';
+  var pax = params.get('passengers') || '1';
+  var cabin = params.get('cabin') || 'Economy';
+  var trip = params.get('trip') || 'round';
+
+  document.getElementById('sumRoute').textContent = from + ' ➔ ' + to;
+  document.getElementById('sumTrip').textContent = trip === 'round' ? 'Round Trip' : 'One Way';
+  document.getElementById('sumDepart').textContent = depart;
+  document.getElementById('sumReturn').textContent = trip === 'round' ? ret : 'N/A';
+  document.getElementById('sumPax').textContent = pax + ' traveller(s)';
+  document.getElementById('sumCabin').textContent = cabin;
+  document.getElementById('sumAirline').textContent = airline;
+
+  document.getElementById('qFrom').value = from;
+  document.getElementById('qTo').value = to;
+  document.getElementById('qDepart').value = depart;
+  document.getElementById('qReturn').value = ret;
+  document.getElementById('qPax').value = pax;
+  document.getElementById('qCabin').value = cabin;
+  document.getElementById('qTrip').value = trip;
+  document.getElementById('qAirline').value = airline;
+  document.getElementById('redirectUrl').value = new URL('thankyou.html', location.href).href;
+</script>
+</body>
+</html>

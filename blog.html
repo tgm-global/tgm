@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Travel Blog: Flight, Hotel and Cruise Tips | bookflights.online</title>
+<meta name="description" content="Travel tips and guides: finding cheaper flights, international travel checklists, baggage advice and first-time cruise tips.">
+<link rel="canonical" href="https://bookflights.online/blog.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script src="posts.js"></script>
+<script>window.PAGE = { crumbs: [['Blog']] };</script>
+<script src="layout.js" defer></script>
+</head>
+<body>
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow">Blog</p>
+    <h1>Travel tips and guides</h1>
+    <p class="sub">Practical advice for planning flights, hotels, car rentals and cruises.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="sec" style="margin-top:40px">
+    <h2>Latest articles</h2>
+    <div class="cards" id="posts"></div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var BF = window.BF;
+  document.getElementById('posts').innerHTML = BF.POSTS.map(function (p) {
+    return '<a class="post-card" href="blog-post.html?slug=' + BF.esc(p.slug) + '"><span class="meta">' + BF.esc(p.date) + '</span><h3>' + BF.esc(p.title) + '</h3><p>' + BF.esc(p.excerpt) + '</p><span style="color:#1458D6;font-weight:700;font-size:14px">Read article &rarr;</span></a>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page title | bookflights.online</title>
+<meta name="description" content="Write a 150 to 160 character description for this page.">
+<link rel="canonical" href="https://bookflights.online/page-name.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script>
+/* crumbs: trail after Home (last item has no link). nav: menu item to highlight.
+   Optional: faqs: [['Question','Answer']], skip: ['deals','links','faq'] */
+window.PAGE = { nav: 'flights.html', crumbs: [['Section', 'section.html'], ['Page title']] };
+</script>
+<script src="layout.js" defer></script>
+</head>
+<body>
+<!-- Header, breadcrumbs, deals, "Explore more", FAQ, footer and cookie banner are added by layout.js -->
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow">Section</p>
+    <h1>Page heading</h1>
+    <p class="sub">One-sentence summary of the page.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="sec" style="margin-top:40px">
+    <div class="prose">
+      <h2>Content section</h2>
+      <p>Write this page's content here.</p>
+    </div>
+  </section>
+</main>
+<!-- For a product enquiry form add: <div id="enquiry" data-product="Hotels"></div> and <script src="enquiry.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Domestic Flights: Popular US Destinations | bookflights.online</title>
+<meta name="description" content="Browse popular US flight destinations including Los Angeles, Las Vegas, Miami and Orlando. Pick a city and request fares.">
+<link rel="canonical" href="https://bookflights.online/flights-domestic.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="data.js"></script>
+<script>window.PAGE = {
+  nav: 'flights.html',
+  crumbs: [['Flights', 'flights.html'], ['Domestic destinations']],
+  faqs: [
+    ['Which US cities can I search?', 'The home page search covers 100 US cities. Choose any two different cities from the list.'],
+    ['Can I search one-way and round-trip?', 'Yes. Choose round trip or one way on the search form.'],
+    ['Can I request a specific airline?', 'Yes. Open one of our airline pages and send your request from there.']
+  ]
+};</script>
+<script src="layout.js" defer></script>
+</head>
+<body>
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow">Flights</p>
+    <h1>Domestic flight destinations</h1>
+    <p class="sub">Popular US cities for weekend breaks, family holidays and business trips. Pick a destination to start your request from New York.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="sec" style="margin-top:40px">
+    <h2>Popular US destinations</h2>
+    <p class="lead">Need a different departure city? Use the <a href="index.html#search">search form</a>.</p>
+    <div class="cards" id="dest"></div>
+  </section>
+
+  <section class="sec">
+    <div class="prose">
+      <h2>Planning a domestic trip</h2>
+      <p>The United States has a dense domestic network, so many city pairs have several flights each day. Departure times, connections and fares change with the season, the day of the week and how early you book.</p>
+      <ul>
+        <li><b>Compare nearby airports.</b> Large cities often have more than one airport.</li>
+        <li><b>Consider travel days.</b> Midweek flights are often cheaper than Friday or Sunday flights.</li>
+        <li><b>Allow time for connections.</b> If you need to change planes, leave enough time between flights.</li>
+      </ul>
+      <p>Looking for an international trip instead? See our <a href="flights-international.html">international destinations</a>.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var el = document.getElementById('dest'), BF = window.BF;
+  el.innerHTML = BF.DOMESTIC.map(function (d) {
+    return '<a class="card-link" href="' + BF.esc(BF.qurl('New York, NY', d[0])) + '"><b>' + BF.esc(BF.city(d[0])) + '</b><span>' + BF.esc(d[1]) + '</span><em>Request fares from New York &rarr;</em></a>';
+  }).join('');
+})();
+</script>
+</body>
+</html>
