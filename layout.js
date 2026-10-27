@@ -22,8 +22,8 @@
   var CONFIG = {
     brand: 'bookflights.online',
     domain: 'https://bookflights.online',
-    phoneDisplay: '+1 692 555-3582',   // shown on screen, e.g. 1-800-000-0000
-    phoneTel: '+1 692 555-3582',         // digits for the call link
+    phoneDisplay: '',   // shown on screen, e.g. 1-800-000-0000
+    phoneTel: '',         // digits for the call link
     email: 'support@bookflights.online',
     nav: [
       ['Home', 'index.html'],
